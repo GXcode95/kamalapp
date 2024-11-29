@@ -1,0 +1,57 @@
+# List of all cops and their description/default values is available here:
+#   https://github.com/bbatsov/rubocop/blob/master/manual/cops.md
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.2.2
+  NewCops: enable
+  Exclude:
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+    - 'db/**/*'
+    - 'app/views/**/*'
+    - 'config/initializers//*'
+    - 'bin/bundle'
+
+Bundler/OrderedGems:
+  Enabled: true
+
+Style/Documentation:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 140
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Style/HashLikeCase:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Style/HashAsLastArrayItem:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false

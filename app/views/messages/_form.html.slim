@@ -1,0 +1,8 @@
+= simple_form_for([message.chatroom, message], html: { class: "flex flex-col" }) do |form|
+  .text-red-500.my-2
+    - form.object.errors.full_messages.each do |error|
+      = error
+  .mb-4
+    = form.rich_text_area :content, input_html: { class: "w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" }
+  .flex.justify-end
+    = form.button :submit, "Send", class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"

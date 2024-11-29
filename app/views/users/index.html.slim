@@ -1,0 +1,7 @@
+h1.text-2xl.font-bold.mb-6.text-center Users
+
+.flex.flex-col.gap-2
+  - @users.each do |user|
+    #user.border-b.border-gray-400.px-4.py-2.flex.justify-between
+      = user.email
+      = button_to 'Send message', chatrooms_path(chatroom: { user_ids: [user.id] }), class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"

@@ -1,0 +1,11 @@
+en:
+  flash:
+    actions:
+      create:
+        success: "%{resource_name} created successfully."
+        error: "Unable to create %{resource_name}."
+      destroy:
+        success: "%{resource_name} deleted successfully."
+      update:
+        success: "%{resource_name} updated successfully."
+        error: "Unable to update %{resource_name}."

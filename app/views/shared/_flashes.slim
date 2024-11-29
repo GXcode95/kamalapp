@@ -1,0 +1,44 @@
+#flashes.relative class="z-[100]"
+  .pointer-events-none.fixed.inset-0.flex.items-end.px-4.py-6.sm:items-start.sm:p-6[aria-live="assertive"]
+    .flex.w-full.flex-col.items-center.space-y-4.sm:items-end
+      - flash.each do |notif_type, message|
+        - case notif_type
+        - when 'success' || 'notice'
+          - text_class = 'text-green-800'
+          - background_class = 'bg-green-50'
+        - when 'info'
+          - text_class = 'text-blue-800'
+          - background_class = 'bg-blue-50'
+        - when 'error' || 'alert'
+          - text_class = 'text-red-800'
+          - background_class = 'bg-red-50'
+        - when 'warning'
+          - text_class = 'text-yellow-800'
+          - background_class = 'bg-yellow-50'
+        - else
+          - text_class = 'text-black'
+          - background_class = 'bg-white'
+
+        .opacity-0.pointer-events-auto.w-full.max-w-sm.overflow-hidden.rounded-lg.shadow-lg.transition-opacity.duration-300 data-controller="flash" data-notif-type=(notif_type) class=(background_class)
+          .p-4
+            .flex.items-start
+              .flex-shrink-0
+                - if notif_type == 'notice'
+                  svg.h-6.w-6.text-green-400[fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"]
+                    path[stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"]
+                - if notif_type == 'info'
+                  svg.h-5.w-5.text-blue-400[viewbox="0 0 20 20" fill="currentColor" aria-hidden="true"]
+                    path[fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd"]
+                - if notif_type == 'error'
+                  svg.h-5.w-5.text-red-400[viewbox="0 0 20 20" fill="currentColor" aria-hidden="true"]
+                    path[fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"]
+              .ml-3.w-0.flex-1.pt-0.5
+                p.text-sm.font-medium class=(text_class)
+                  = message
+              .ml-4.flex.flex-shrink-0
+                button.inline-flex.rounded-md.text-gray-400.hover:text-gray-500.focus:outline-none.focus:ring-2.focus:ring-primary-light.focus:ring-offset-2[type="button" data-action="click->flash#close"]
+                  span.sr-only
+                    | Close
+                  svg.h-5.w-5[viewbox="0 0 20 20" fill="currentColor" aria-hidden="true"]
+                    path[d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"]
+
