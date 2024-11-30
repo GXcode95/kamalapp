@@ -11,4 +11,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "pages#home"
+
+  devise_for :users
+  resources :users, only: [:index]
+
+  resources :chatrooms, except: [:edit, :update] do
+    resources :messages, only: [:create]
+  end
 end

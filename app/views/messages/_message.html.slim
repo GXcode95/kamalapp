@@ -1,0 +1,6 @@
+div id="message-#{message.id}" class="message message--#{message.user.id}"
+  .message-header.flex.items-center.mb-2
+    .message-author.font-bold.text-blue-600.mr-2 = message.user.email
+    .message-timestamp.text-gray-500.text-sm = message.created_at.strftime("%Y-%m-%d %H:%M")
+  .message-content.border.border-green-500.bg-white.p-2.rounded-lg.shadow-md
+    = message.content

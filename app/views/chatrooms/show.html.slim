@@ -1,0 +1,18 @@
+css:
+  .message--#{current_user&.id} {
+    .message-content {
+      border-color: blue;
+    }
+    .message-author {
+      color: blue;
+    }
+  }
+
+h2.text-2xl.font-bold.mb-6.text-center = @chatroom.name
+
+#messages.flex.flex-col.h-96.overflow-y-auto.bg-gray-100.p-4.rounded-lg.shadow-inner data-chatroom-id=@chatroom.id
+  - @chatroom.messages.each do |message|
+    = render partial: 'messages/message', locals: { message: message }
+
+#new-message-form.mt-4
+  = render 'messages/form', chatroom: @chatroom

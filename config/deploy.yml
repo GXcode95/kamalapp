@@ -1,8 +1,8 @@
 # Name of your application. Used to uniquely configure containers.
-service: rails8_chat
+service: kamalapp
 
 # Name of the container image.
-image: gxcode95/rails8_chat
+image: gxcode95/kamalapp
 
 # Deploy to these servers.
 servers:
