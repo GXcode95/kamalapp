@@ -52,7 +52,11 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem 'rubocop-rails-omakase', require: false
 
+  gem 'byebug'
   gem 'dotenv-rails'
+  gem 'factory_bot_rails'
+  gem 'rails-controller-testing'
+  gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
@@ -64,7 +68,6 @@ group :development do
 
   gem 'annotate'
   gem 'bullet'
-  gem 'byebug'
   gem 'letter_opener'
 end
 
@@ -75,6 +78,7 @@ group :test do
 end
 
 gem 'devise'
+gem 'faker'
 gem 'i18n'
 gem 'simple_form'
 gem 'simple_form-tailwind'

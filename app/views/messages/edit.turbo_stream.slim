@@ -1,1 +1,2 @@
-= turbo_stream.replace message, partial: 'edit_form', locals: { message: message }
+= turbo_stream.replace "edit_message_#{@message.id}", partial: 'form', locals: { message: @message }
+= turbo_stream.replace('flashes',  partial: 'shared/flashes', locals: { flash: flash })
