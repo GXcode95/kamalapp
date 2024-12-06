@@ -34,19 +34,29 @@ RSpec.describe ChatroomsController, type: :request do
     end
 
     describe 'GET show' do
-      it 'assigns @chatroom' do
-        get chatroom_path(chatroom)
-        expect(assigns(:chatroom)).to eq(chatroom)
+      context 'when user is part of the chatroom' do
+        it 'assigns @chatroom' do
+          get chatroom_path(chatroom)
+          expect(assigns(:chatroom)).to eq(chatroom)
+        end
+
+        it 'renders the show template' do
+          get chatroom_path(chatroom)
+          expect(response).to render_template(:show)
+        end
+
+        it 'returns status code ok' do
+          get chatroom_path(chatroom)
+          expect(response).to have_http_status(:ok)
+        end
       end
 
-      it 'renders the show template' do
-        get chatroom_path(chatroom)
-        expect(response).to render_template(:show)
-      end
-
-      it 'returns status code ok' do
-        get chatroom_path(chatroom)
-        expect(response).to have_http_status(:ok)
+      context 'when user isn\'t part of the chatroom' do
+        it 'raise permission error' do
+          expect do
+            get chatroom_path(create(:chatroom))
+          end.to raise_error(CanCan::AccessDenied)
+        end
       end
     end
   end

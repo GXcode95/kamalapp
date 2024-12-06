@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class ChatroomsController < ApplicationController
-  before_action :set_chatroom, only: :show
+  load_and_authorize_resource
 
   def index
-    @chatrooms = Chatroom.all
+    @chatrooms = current_user.chatrooms
   end
 
   def show
@@ -12,10 +12,6 @@ class ChatroomsController < ApplicationController
   end
 
   private
-
-  def set_chatroom
-    @chatroom = Chatroom.find(params[:id])
-  end
 
   def chatroom_params
     params.require(:chatroom).permit(:name, user_ids: [])

@@ -3,7 +3,12 @@
 class ChatroomChannel < ApplicationCable::Channel
   def subscribed
     chatroom = Chatroom.find(params[:id])
-    stream_for chatroom
+
+    if Ability.new(current_user).can?(:read, chatroom)
+      stream_for chatroom
+    else
+      reject_subscription
+    end
   end
 
   def unsubscribed

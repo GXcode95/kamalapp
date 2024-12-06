@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FriendshipsController < ApplicationController
+  load_and_authorize_resource
+
   def index
     @accepted_friendships = current_user.friendships.accepted
     @pending_friendships = current_user.friendships.pending
@@ -24,7 +26,6 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    @friendship = Friendship.find(params[:id])
     if @friendship.update(status: :accepted)
       flash.now[:success] = t('flash.actions.update.success', resource_name: Friendship.model_name.human)
     else
@@ -33,7 +34,6 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy
-    @friendship = Friendship.find(params[:id])
     flash.now[:success] = t('flash.actions.destroy.success', resource_name: Friendship.model_name.human)
     @friendship.destroy
   end

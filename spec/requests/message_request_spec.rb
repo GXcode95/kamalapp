@@ -7,9 +7,10 @@ RSpec.describe MessagesController, type: :request do
   let!(:user2) { create(:user) }
   let!(:chatroom) { create(:chatroom, users: [user1, user2]) }
   let!(:message) { create(:message, user: user1, chatroom: chatroom) }
+  let!(:other_chatroom) { create(:chatroom) }
 
   let(:valid_attributes) { { content: 'This is a content', chatroom_id: message.chatroom.id } }
-  let(:unvalid_attributes) { { content: nil, chatroom_id: message.chatroom.id } }
+  let(:unvalid_attributes_content) { { content: nil, chatroom_id: message.chatroom.id } }
 
   context 'when user is signed in' do
     before do
@@ -52,42 +53,49 @@ RSpec.describe MessagesController, type: :request do
 
     describe 'POST create' do
       context 'with valid params' do
-        it 'creates a message' do
-          params = { message:  valid_attributes }
-          expect do
+        context 'when user is in the room' do
+          let(:params) { { message: valid_attributes } }
+          it 'creates a message' do
+            expect do
+              post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
+            end.to change(Message, :count).by(1)
+          end
+
+          it 'responds with turbo_stream' do
             post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
-          end.to change(Message, :count).by(1)
+            expect(response.media_type).to eq Mime[:turbo_stream]
+          end
+
+          it 'returns a turbo_stream tag with update action' do
+            post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
+            expect(response.body).to include('<turbo-stream action="update" target="new-message">')
+          end
+
+          it 'returns a status code found' do
+            post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
+            expect(response).to have_http_status(:ok)
+          end
         end
 
-        it 'responds with turbo_stream' do
-          params = { message: valid_attributes }
-          post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
-          expect(response.media_type).to eq Mime[:turbo_stream]
-        end
-
-        it 'returns a turbo_stream tag with update action' do
-          params = { message: valid_attributes }
-          post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
-          expect(response.body).to include('<turbo-stream action="update" target="new-message">')
-        end
-
-        it 'returns a status code found' do
-          params = { message: valid_attributes }
-          post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
-          expect(response).to have_http_status(:ok)
+        context 'when user is not in the room' do
+          it 'raise permission error' do
+            params = { message: { content: 'This is a content', chatroom_id: other_chatroom.id } }
+            expect do
+              post chatroom_messages_path(other_chatroom, format: :turbo_stream), params: params
+            end.to raise_error(CanCan::AccessDenied)
+          end
         end
       end
 
       context 'with unvalid params' do
-        it 'does not create record' do
-          params = { message: unvalid_attributes }
+        let(:params) { { message: unvalid_attributes_content } }
+        it 'does not create message' do
           expect do
             post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
           end.to change(Message, :count).by(0)
         end
 
         it 'renders flash' do
-          params = { message: unvalid_attributes }
           post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
           expect(response).to render_template('shared/_flashes')
         end
@@ -99,7 +107,6 @@ RSpec.describe MessagesController, type: :request do
         end
 
         it 'returns a status code unprocessable_entity' do
-          params = { message: unvalid_attributes }
           post chatroom_messages_path(chatroom, format: :turbo_stream), params: params
           expect(response).to have_http_status(:unprocessable_entity)
         end
@@ -128,27 +135,24 @@ RSpec.describe MessagesController, type: :request do
       end
 
       context 'with unvalid params' do
+        let(:params) { { message: unvalid_attributes_content } }
         it 'does not update message' do
-          params = { message: unvalid_attributes }
           expect do
             put chatroom_message_path(chatroom, message, format: :turbo_stream), params: params
           end.to_not change(message, :content)
         end
 
         it 'renders the template layouts/flash' do
-          params = { message: unvalid_attributes }
           put chatroom_message_path(chatroom, message, format: :turbo_stream), params: params
           expect(response).to render_template('shared/_flashes')
         end
 
         it 'responds with turbo_stream' do
-          params = { message: unvalid_attributes }
           put chatroom_message_path(chatroom, message, format: :turbo_stream), params: params
           expect(response.media_type).to eq Mime[:turbo_stream]
         end
 
         it 'returns a status code unprocessable_entity' do
-          params = { message: unvalid_attributes }
           put chatroom_message_path(chatroom, message, format: :turbo_stream), params: params
           expect(response).to have_http_status(:unprocessable_entity)
         end

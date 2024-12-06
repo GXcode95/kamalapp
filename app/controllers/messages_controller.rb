@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
 class MessagesController < ApplicationController
+  load_and_authorize_resource except: :create
+
   before_action :set_chatroom, only: :create
-  before_action :set_message, except: :create
 
   def show; end
 
   def edit; end
 
   def create
-    @chatroom = Chatroom.find(params[:chatroom_id])
-    @message = @chatroom.messages.build(message_params.merge(user: current_user))
+    @message = @chatroom.messages.new(message_params.merge(user: current_user))
 
+    authorize! :create, @message
     return if @message.save
 
     render :new, status: :unprocessable_entity
@@ -37,10 +38,6 @@ class MessagesController < ApplicationController
 
   def set_chatroom
     @chatroom = Chatroom.find(params[:chatroom_id])
-  end
-
-  def set_message
-    @message = Message.find(params[:id])
   end
 
   def message_params

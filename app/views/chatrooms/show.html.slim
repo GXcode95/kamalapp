@@ -2,7 +2,7 @@
 
 h2.text-2xl.font-bold.mb-6.text-center = @chatroom.name
 
-= turbo_frame_tag 'messages', class: 'flex flex-col h-96 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-inner mb-4', data: { 'chatroom-id': @chatroom }
+= turbo_frame_tag 'messages', class: 'flex flex-col h-96 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-inner mb-4'
   
     - @chatroom.messages.each do |message|
       = render partial: 'messages/message', locals: { message: message }
