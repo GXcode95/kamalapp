@@ -1,0 +1,3 @@
+= turbo_stream.update @friendship, partial: 'users/user', locals: { user: @friendship.friend }
+= turbo_stream.update @friendship.friend, partial: 'users/user', locals: { user: @friendship.friend }
+= turbo_stream.replace('flashes',  partial: 'shared/flashes', locals: { flash: flash })
