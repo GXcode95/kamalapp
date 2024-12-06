@@ -6,8 +6,22 @@ class Chatroom < ApplicationRecord
   has_many :messages, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
+  scope :with_exact_user_ids, lambda { |user_ids|
+    joins(:chatrooms_users)
+      .where(chatrooms_users: { user_id: user_ids })
+      .group('chatrooms.id')
+      .having('COUNT(chatrooms_users.user_id) = ?', user_ids.size)
+  }
 
   before_validation :set_name
+
+  def self.with_users(users)
+    users.map do |user|
+      user.instance_of?(User) ? user.id : user
+    end
+
+    with_exact_user_ids(users)&.first
+  end
 
   private
 

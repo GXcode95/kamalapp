@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :users, only: :index
   resources :friendships, only: %i[index update create destroy]
 
-  resources :chatrooms, except: %i[new edit update] do
+  resources :chatrooms, only: %i[index show] do
     resources :messages, except: %i[index new]
   end
 end

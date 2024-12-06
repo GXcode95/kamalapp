@@ -5,8 +5,11 @@ require 'rails_helper'
 RSpec.describe ChatroomsController, type: :request do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
+  let!(:friendship_user1_user2) { create(:accepted_friendship, user: user1, friend: user2) }
+  let!(:friendship_user2_user1) { friendship_user1_user2.reciprocal_friendship.update(status: :accepted) }
+  let!(:chatroom) { Chatroom.with_users([user1, user2]) }
+
   let!(:user3) { create(:user) }
-  let!(:chatroom) { create(:chatroom, users: [user1, user2]) }
 
   context 'when user is signed in' do
     before do
@@ -44,43 +47,6 @@ RSpec.describe ChatroomsController, type: :request do
       it 'returns status code ok' do
         get chatroom_path(chatroom)
         expect(response).to have_http_status(:ok)
-      end
-    end
-
-    describe 'POST create' do
-      context 'when chatroom does not exist' do
-        let(:new_chatroom_params) { { user_ids: [user3.id] } }
-
-        it 'creates a new chatroom' do
-          expect do
-            post chatrooms_path, params: { chatroom: new_chatroom_params }
-          end.to change(Chatroom, :count).by(1)
-        end
-
-        it 'redirects to the new chatroom' do
-          post chatrooms_path, params: { chatroom: new_chatroom_params }
-          expect(response).to redirect_to(Chatroom.last)
-        end
-
-        it 'sets a flash success message' do
-          post chatrooms_path, params: { chatroom: new_chatroom_params }
-          expect(flash[:success]).to eq(I18n.t('flash.actions.create.success', resource_name: Chatroom.model_name.human))
-        end
-      end
-
-      context 'when chatroom already exists' do
-        let(:existing_chatroom_params) { { user_ids: [user1.id, user2.id] } }
-
-        it 'does not create a new chatroom' do
-          expect do
-            post chatrooms_path, params: { chatroom: existing_chatroom_params }
-          end.to_not change(Chatroom, :count)
-        end
-
-        it 'redirects to chatroom path' do
-          post chatrooms_path, params: { chatroom: existing_chatroom_params }
-          expect(response).to redirect_to(chatroom)
-        end
       end
     end
   end

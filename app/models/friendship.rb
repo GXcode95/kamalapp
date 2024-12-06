@@ -12,6 +12,7 @@ class Friendship < ApplicationRecord
   validate :not_self
 
   after_create_commit :create_reciprocal_friendship, if: -> { reciprocal_friendship.nil? }
+  after_update_commit :create_users_chatroom, if: -> { saved_change_to_status? && status == 'accepted' }
   after_destroy :destroy_reciprocal_friendship, unless: -> { reciprocal_friendship.nil? }
 
   def reciprocal_friendship
@@ -30,5 +31,12 @@ class Friendship < ApplicationRecord
 
   def destroy_reciprocal_friendship
     reciprocal_friendship&.destroy
+  end
+
+  def create_users_chatroom
+    users = [user.id, friend.id]
+    return if Chatroom.with_users(users)
+
+    Chatroom.create!(user_ids: users)
   end
 end
