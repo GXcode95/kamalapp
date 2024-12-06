@@ -20,8 +20,9 @@ class MessagesController < ApplicationController
   def update
     if @message.update(message_params)
       flash.now[:success] = I18n.t('flash.actions.update.success', resource_name: Message.model_name.human)
+      head :ok
     else
-      flash.now[:error] = I18n.t('flash.actions.update.error', resource_name: Message.model_name.human)
+      flash[:error] = I18n.t('flash.actions.update.error', resource_name: Message.model_name.human)
       render :edit, status: :unprocessable_entity
     end
   end
