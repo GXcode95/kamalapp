@@ -1,26 +1,8 @@
-= turbo_stream_from @chatroom
+= turbo_frame_tag 'chatroom-chat', class: 'flex flex-col h-full'
+    = turbo_stream_from @chatroom
+    = turbo_frame_tag 'messages', class: 'flex flex-1 flex-col overflow-y-auto bg-gray-100 p-4 mb-4'
+        - @chatroom.messages.each do |message|
+          = render partial: 'messages/message', locals: { message: message }
 
-h2.text-2xl.font-bold.mb-6.text-center = @chatroom.name
-
-= turbo_frame_tag 'messages', class: 'flex flex-col h-96 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-inner mb-4'
-  
-    - @chatroom.messages.each do |message|
-      = render partial: 'messages/message', locals: { message: message }
-
-= turbo_frame_tag 'new-message'
-  = render 'messages/form', message: @chatroom.messages.new
-
-css:
-  .message-#{current_user&.id} {
-    .message-content {
-      border-color: blue;
-    }
-    .message-author {
-      color: blue;
-    }
-    
-    .message--menu {
-      opacity: 100;
-      pointer-events: auto;
-    }
-  }
+    = turbo_frame_tag 'new-message'
+      = render 'messages/form', message: @chatroom.messages.new

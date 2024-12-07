@@ -6,6 +6,9 @@ class Chatroom < ApplicationRecord
   has_many :messages, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
+
+  before_validation :set_name
+
   scope :with_exact_user_ids, lambda { |user_ids|
     joins(:chatrooms_users)
       .where(chatrooms_users: { user_id: user_ids })
@@ -13,7 +16,10 @@ class Chatroom < ApplicationRecord
       .having('COUNT(chatrooms_users.user_id) = ?', user_ids.size)
   }
 
-  before_validation :set_name
+  scope :ordered_by_last_message, -> { left_joins(:messages).group('chatrooms.id').order('MAX(messages.created_at) DESC') }
+
+
+
 
   def self.with_users(users)
     users.map do |user|

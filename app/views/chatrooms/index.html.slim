@@ -1,6 +1,27 @@
-h1.text-3xl.font-bold.mb-6.text-center Chatrooms
+.flex.h-full
+  .px-4.bg-gray-200
+    ul.shadow-md.rounded-lg.p-4
+      - @chatrooms.each do |chatroom|
+        li.border-b.border-gray-100.py-2
+          = link_to chatroom.name, chatroom, class: "text-blue-600 hover:underline", data: { turbo_frame: 'chatroom-chat' }
 
-ul.bg-white.shadow-md.rounded-lg.p-4
-  - @chatrooms.each do |chatroom|
-    li.border-b.border-gray-200.py-2
-      = link_to chatroom.name, chatroom, class: "text-blue-600 hover:underline"
+  .flex-1.bg-blue-100
+    - if @chatroom
+      = render template: 'chatrooms/show', locals: { chatroom: @chatroom }
+    - else
+      p.text-center.text-2xl.text-bold No chatroom selected
+
+css:
+  .message-#{current_user&.id} {
+    .message-content {
+      border-color: blue;
+    }
+    .message-author {
+      color: blue;
+    }
+
+    .message--menu {
+      opacity: 100;
+      pointer-events: auto;
+    }
+  }
