@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_05_223721) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_07_112131) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -56,9 +56,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_05_223721) do
     t.index ["name"], name: "index_chatrooms_on_name", unique: true
   end
 
-  create_table "chatrooms_users", id: false, force: :cascade do |t|
+  create_table "chatrooms_users", force: :cascade do |t|
     t.integer "chatroom_id", null: false
     t.integer "user_id", null: false
+    t.datetime "last_visit_at"
     t.index ["chatroom_id", "user_id"], name: "index_chatrooms_users_on_chatroom_id_and_user_id", unique: true
     t.index ["chatroom_id"], name: "index_chatrooms_users_on_chatroom_id"
     t.index ["user_id"], name: "index_chatrooms_users_on_user_id"
