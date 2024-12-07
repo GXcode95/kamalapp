@@ -1,11 +1,10 @@
-.flex.h-full
-  .px-4.bg-gray-200
-    ul.shadow-md.rounded-lg.p-4
-      - @chatrooms.each do |chatroom|
-        li.border-b.border-gray-100.py-2
-          = link_to chatroom.name, chatroom, class: "text-blue-600 hover:underline", data: { turbo_frame: 'chatroom-chat' }
+= turbo_stream_from "chatrooms_#{current_user.id}"
 
-  .flex-1.bg-blue-100
+.flex.h-full data-controller='chatrooms'
+  .px-4.bg-gray-200
+    = render 'list', chatrooms: @chatrooms, curr_user: current_user
+
+  .grow.bg-gray-100
     - if @chatroom
       = render template: 'chatrooms/show', locals: { chatroom: @chatroom }
     - else

@@ -1,0 +1,4 @@
+- text_class = unread ? "text-red-500" : "text-blue-600"
+li.border-b.border-gray-100.py-2 id="chatroom_list_item_#{chatroom.id}" class="#{text_class}"
+
+  = link_to chatroom.name, chatroom, class: "hover:underline", data: { turbo_frame: 'chatroom-chat' }

@@ -23,8 +23,7 @@ html
 
   body
     = render "shared/flashes"
-    .min-h-screen.flex
+    .h-screen.flex
       = render "shared/navbar"
-      .flex.flex-col.grow.min-h-screen.min-w-0
-        main.grow
-          = yield
+      main.flex.flex-col.grow.h-screen
+        = yield

@@ -1,0 +1,5 @@
+= turbo_frame_tag 'chatrooms'
+  ul.shadow-md.rounded-lg.p-4 data-chatrooms-target='list'
+    - chatrooms.each_with_index do |chatroom, idx|
+      - unread = chatroom.user_has_unread_messages?(curr_user)
+      = render 'chatrooms/list_item', chatroom: chatroom, unread: unread
