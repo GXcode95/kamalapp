@@ -26,6 +26,23 @@ RSpec.describe UsersController, type: :request do
         get users_path
         expect(response).to have_http_status(:ok)
       end
+
+      context 'with scope by_email' do
+        it 'assigns @users' do
+          get users_path, params: { by_email: user2.email }
+          expect(assigns(:users)).to eq([user2])
+        end
+
+        it 'renders the index template' do
+          get users_path, params: { by_email: user2.email }
+          expect(response).to render_template(:index)
+        end
+
+        it 'returns status code ok' do
+          get users_path, params: { by_email: user2.email }
+          expect(response).to have_http_status(:ok)
+        end
+      end
     end
   end
 

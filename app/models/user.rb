@@ -14,11 +14,13 @@ class User < ApplicationRecord
   has_many :accepted_friendships, -> { where(status: :accepted) }, class_name: 'Friendship', dependent: :destroy, inverse_of: :user
   has_many :friends, through: :friendships
 
+  scope :by_email, ->(email) { where('email LIKE ?', "%#{email}%") }
+
   def confirmed_friend_with?(user)
     Friendship.find_by(user: self, friend: user, status: :accepted) && Friendship.find_by(user: user, friend: self, status: :accepted)
   end
 
-  def pending_friendships
+  def pending_friendshipsc
     friendships.pending.where(friend: self)
   end
 

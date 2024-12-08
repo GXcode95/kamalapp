@@ -80,6 +80,7 @@ end
 gem 'cancancan'
 gem 'devise'
 gem 'faker'
+gem 'has_scope'
 gem 'i18n'
 gem 'simple_form'
 gem 'simple_form-tailwind'
