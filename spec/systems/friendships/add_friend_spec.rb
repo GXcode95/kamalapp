@@ -12,14 +12,21 @@ RSpec.describe 'Add friend', type: :system do
   end
 
   scenario 'User adds a friend' do
-    visit users_path
+    visit friendships_path
+
+    within '#users' do
+      fill_in 'by_email', with: friend.email
+      find_field('by_email').send_keys(:enter)
+    end
+
+    sleep 1
 
     find("#user_#{friend.id}").click_button('Invite')
 
     sleep 1
 
     expect(
-      user.friendships.find_by(friend_id: friend.id, status: :accepted)
+      user.friendships.find_by(friend_id: friend.id, status: :sent)
     ).to be_truthy
 
     expect(

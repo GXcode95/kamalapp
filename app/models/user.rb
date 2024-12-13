@@ -11,20 +11,9 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :pending_friendships, -> { where(status: :pending) }, class_name: 'Friendship', dependent: :destroy, inverse_of: :user
-  has_many :accepted_friendships, -> { where(status: :accepted) }, class_name: 'Friendship', dependent: :destroy, inverse_of: :user
+  has_many :sent_friendships, -> { where(status: :sent) }, class_name: 'Friendship', dependent: :destroy, inverse_of: :user
+  has_many :confirmed_friendships, -> { where(status: :confirmed) }, class_name: 'Friendship', dependent: :destroy, inverse_of: :user
   has_many :friends, through: :friendships
 
-  scope :by_email, ->(email) { where('email LIKE ?', "%#{email}%") }
-
-  def confirmed_friend_with?(user)
-    Friendship.find_by(user: self, friend: user, status: :accepted) && Friendship.find_by(user: user, friend: self, status: :accepted)
-  end
-
-  def pending_friendshipsc
-    friendships.pending.where(friend: self)
-  end
-
-  def sent_friendships
-    friendships.pending.where(user: self)
-  end
+  scope :by_email, ->(email) { email.present? ? where('email LIKE ?', "%#{email}%") : none }
 end

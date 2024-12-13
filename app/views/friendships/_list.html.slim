@@ -1,0 +1,8 @@
+.flex.flex-col.gap-2
+  - if friendships.any?
+    h2.text-lg.font-bold.text-center = title 
+
+  - friendships.each do |friendship|
+    = turbo_frame_tag friendship
+      = render partial: 'users/user', locals: { user: friendship.friend }
+

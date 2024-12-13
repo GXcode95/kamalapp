@@ -1,12 +1,12 @@
 h1.text-2xl.font-bold.mb-6.text-center Friendships
 
-#requests.flex.flex-col.gap-2
-  h2.text-lg.font-bold.text-center Pending requests
-  - @pending_friendships.each do |friendship|
-    = turbo_frame_tag friendship
-      = render partial: 'users/user', locals: { user: friendship.friend }
-#friends.flex.flex-col.gap-2
-  h2.text-lg.font-bold.text-center Friends
-  - @accepted_friendships.each do |friendship|
-    = turbo_frame_tag friendship
-      = render partial: 'users/user', locals: { user: friendship.friend }
+h2.text-lg.font-bold.text-center Add friends
+= turbo_frame_tag 'users'
+  = render 'users/list', users: []
+
+= turbo_frame_tag 'friendships_pending'
+  = render 'list', { friendships: @pending_friendships, title: 'Pending requests' }
+
+= turbo_frame_tag 'friendships_confirmed'
+  = render 'list', { friendships: @confirmed_friendships, title: 'Friends' }
+

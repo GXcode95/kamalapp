@@ -1,0 +1,8 @@
+.mx-auto
+  = simple_form_for :by_email, url: users_path, method: :get, data: { turbo_frame: :users } do |f|
+    = f.input :email, label: false, placeholder: 'Search by email', input_html: { name: :by_email }
+
+.flex.flex-col.gap-2
+  - users.each do |user|
+    = render user
+

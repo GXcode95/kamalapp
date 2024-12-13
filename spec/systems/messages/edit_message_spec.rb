@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Edit message', type: :system do
   let(:user) { create(:user) }
   let(:friend) { create(:user) }
-  let(:friend_friendship) { create(:accepted_friendship, user: friend, friend: user) }
+  let(:friend_friendship) { create(:confirmed_friendship, user: friend, friend: user) }
   let(:user_friendship) { friend_friendship.reciprocal_friendship }
   let(:chatroom) { create(:chatroom, users: [user, friend]) }
   let!(:message) { create(:message, user: user, chatroom: chatroom) }

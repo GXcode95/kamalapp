@@ -3,8 +3,6 @@ nav.bg-gray-800.p-4.flex.flex-col.justify-center
     ul.mt-8.flex.flex-col.items-center
       - if user_signed_in?
         li.mb-4
-          = link_to "Users", users_path, class: "text-gray-300 hover:text-white"
-        li.mb-4
           = link_to "Chatrooms", chatrooms_path, class: "text-gray-300 hover:text-white"
         li.mb-4
           = link_to "Friendships", friendships_path, class: "text-gray-300 hover:text-white"

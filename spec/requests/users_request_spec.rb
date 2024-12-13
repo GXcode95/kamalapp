@@ -14,7 +14,7 @@ RSpec.describe UsersController, type: :request do
     describe 'GET index' do
       it 'assigns @users' do
         get users_path
-        expect(assigns(:users)).to eq([user2])
+        expect(assigns(:users)).to eq([])
       end
 
       it 'renders the index template' do

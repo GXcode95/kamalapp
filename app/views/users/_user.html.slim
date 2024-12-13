@@ -4,9 +4,10 @@
     .flex.gap-2
       - if current_user.friends.include?(user)
         - friendship = current_user.friendships.find_by(friend_id: user.id)
-        - if current_user.confirmed_friend_with?(user)
+        - if friendship.confirmed?
           = button_to 'Send message', chatrooms_path(chatroom: { user_ids: [user.id] }), data: { turbo_frame: '_top' }, class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        - if friendship.accepted?
+          = link_to 'Unfriend',friendship_path(friendship), data: { turbo_method: :delete }, class: "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+        - elsif friendship.sent?
           = link_to 'Unfriend',friendship_path(friendship), data: { turbo_method: :delete }, class: "bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
         - else
           = link_to 'Accept', friendship_path(friendship), data: { turbo_method: :patch }, class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"

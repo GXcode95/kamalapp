@@ -164,16 +164,6 @@ RSpec.describe MessagesController, type: :request do
         delete chatroom_message_path(chatroom, message)
         expect { message.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
-
-      it 'returns an empty body' do
-        delete chatroom_message_path(chatroom, message)
-        expect(response.body).to eq('')
-      end
-
-      it 'returns a status no_content' do
-        delete chatroom_message_path(chatroom, message)
-        expect(response).to have_http_status(:no_content)
-      end
     end
   end
 

@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe ChatroomsController, type: :request do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
-  let!(:friendship_user1_user2) { create(:accepted_friendship, user: user1, friend: user2) }
-  let!(:friendship_user2_user1) { friendship_user1_user2.reciprocal_friendship.update(status: :accepted) }
+  let!(:friendship_user1_user2) { create(:confirmed_friendship, user: user1, friend: user2) }
+  let!(:friendship_user2_user1) { friendship_user1_user2.reciprocal_friendship.update(status: :confirmed) }
   let!(:chatroom) { Chatroom.with_users([user1, user2]) }
 
   let!(:user3) { create(:user) }

@@ -5,9 +5,7 @@ class UsersController < ApplicationController
 
   before_action :authenticate_user!
 
-  has_scope :by_email
-
   def index
-    @users = apply_scopes(User).where.not(id: current_user)
+    @users = User.by_email(params[:by_email]).where.not(id: current_user.id)
   end
 end

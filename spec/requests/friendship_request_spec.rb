@@ -8,7 +8,7 @@ RSpec.describe FriendshipsController, type: :request do
   let!(:user3) { create(:user) }
   let!(:user4) { create(:user) }
 
-  let!(:pending_friendship_user1_user2_sent) { create(:accepted_friendship, user: user1, friend: user2) }
+  let!(:pending_friendship_user1_user2_sent) { create(:confirmed_friendship, user: user1, friend: user2) }
   let!(:pending_friendship_user2_user1_received) { pending_friendship_user1_user2_sent.reciprocal_friendship }
 
   let!(:pending_friendship_user3_user1_sent) { create(:pending_friendship, user: user3, friend: user1) }
@@ -20,14 +20,14 @@ RSpec.describe FriendshipsController, type: :request do
     end
 
     describe 'GET index' do
-      it 'assigns @accepted_friendships' do
+      it 'assigns @confirmed_friendships' do
         get friendships_path
-        expect(assigns(:accepted_friendships)).to eq([pending_friendship_user1_user2_sent])
+        expect(assigns(:confirmed_friendships)).to eq(user1.confirmed_friendships)
       end
 
       it 'assigns @pending_friendships' do
         get friendships_path
-        expect(assigns(:pending_friendships)).to eq([pending_friendship_user1_user3_received])
+        expect(assigns(:pending_friendships)).to eq(user1.pending_friendships)
       end
 
       it 'renders the index template' do
@@ -73,7 +73,7 @@ RSpec.describe FriendshipsController, type: :request do
 
         it 'accept the friendship' do
           post friendships_path(format: :turbo_stream), params: existing_friendship_params
-          expect(pending_friendship_user1_user3_received.reload.status).to eq('accepted')
+          expect(pending_friendship_user1_user3_received.reload.status).to eq('confirmed')
         end
 
         it 'renders flashes' do
@@ -92,20 +92,22 @@ RSpec.describe FriendshipsController, type: :request do
       context 'when user owns the friendship' do
         it 'accept the friendship' do
           patch friendship_path(pending_friendship_user1_user3_received, format: :turbo_stream)
-          expect(pending_friendship_user1_user3_received.reload.status).to eq('accepted')
+          expect(pending_friendship_user1_user3_received.reload.status).to eq('confirmed')
         end
 
-        it 'returns a turbo_stream tag with update action for friendship' do
+        it 'returns a turbo_stream tag with update action for friendship_pending' do
           patch friendship_path(pending_friendship_user1_user3_received, format: :turbo_stream)
+
           expect(response.body).to(
-            include("<turbo-stream action=\"update\" target=\"friendship_#{pending_friendship_user1_user3_received.id}\"")
+            include('<turbo-stream action="update" target="friendships_pending">')
           )
         end
 
-        it 'returns a turbo_stream tag with update action for user' do
+        it 'returns a turbo_stream tag with update action for friendship_confirmed' do
           patch friendship_path(pending_friendship_user1_user3_received, format: :turbo_stream)
+
           expect(response.body).to(
-            include("<turbo-stream action=\"update\" target=\"friendship_#{pending_friendship_user1_user3_received.id}\"")
+            include('<turbo-stream action="update" target="friendships_confirmed">')
           )
         end
 

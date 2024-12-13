@@ -1,3 +1,6 @@
 = turbo_stream.remove @friendship
-= turbo_stream.update @friendship.friend, partial: 'users/user', locals: { user: @friendship.friend }
+
+- if current_user.pending_friendships.empty?
+  = turbo_stream.update 'friendships_pending', ''
+
 = turbo_stream.replace('flashes',  partial: 'shared/flashes', locals: { flash: flash })

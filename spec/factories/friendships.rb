@@ -4,14 +4,18 @@ FactoryBot.define do
   factory :friendship do
     association :user
     association :friend, factory: :user
-    status { :accepted }
+    status { :confirmed }
   end
 
-  factory :accepted_friendship, parent: :friendship do
-    status { :accepted }
+  factory :confirmed_friendship, parent: :friendship do
+    status { :confirmed }
   end
 
   factory :pending_friendship, parent: :friendship do
-    status { :accepted }
+    status { :pending }
+  end
+
+  factory :sent_friendship, parent: :friendship do
+    status { :sent }
   end
 end

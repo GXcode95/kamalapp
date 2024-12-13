@@ -23,7 +23,7 @@ html
 
   body
     = render "shared/flashes"
-    .h-screen.flex
+    .h-screen.flex.w-screen
       = render "shared/navbar"
-      main.flex.flex-col.grow.h-screen
+      main.flex.flex-col.grow.h-screen.overflow-y-scroll
         = yield

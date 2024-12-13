@@ -4,16 +4,16 @@ class FriendshipsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @accepted_friendships = current_user.friendships.accepted
+    @confirmed_friendships = current_user.friendships.confirmed
     @pending_friendships = current_user.friendships.pending
   end
 
   def create
     @friendship = Friendship.find_by(user: current_user, friend: params[:friend_id])
     if @friendship
-      @friendship.status = :accepted
+      @friendship.status = :confirmed
     else
-      @friendship = Friendship.new(friend_id: params[:friend_id], user_id: current_user.id, status: :accepted)
+      @friendship = Friendship.new(friend_id: params[:friend_id], user_id: current_user.id, status: :sent)
     end
 
     if @friendship.save
@@ -26,7 +26,8 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    if @friendship.update(status: :accepted)
+    if @friendship.update(status: :confirmed)
+      @confirmed_friendships = current_user.friendships.confirmed
       flash.now[:success] = t('flash.actions.update.success', resource_name: Friendship.model_name.human)
     else
       flash.now[:error] = t('flash.actions.update.error', resource_name: Friendship.model_name.human)

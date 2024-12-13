@@ -1,8 +1,8 @@
-= turbo_frame_tag 'chatroom-chat', class: 'flex flex-col h-full overflow-hidden'
-  div data-chatrooms-target="chat" data-chatroom-id="#{@chatroom.id}" class="flex flex-col flex-1 overflow-hidden"
+= turbo_frame_tag 'chatroom-chat'
+  .flex.flex-col.grow.h-full.p-4 data-chatrooms-target="chat" data-chatroom-id="#{@chatroom.id}" 
     = turbo_stream_from @chatroom
 
-    = turbo_frame_tag 'messages', class: 'flex-1 overflow-y-auto opacity-0 p-4 mb-4', data: { chatrooms_target: 'messages' }
+    = turbo_frame_tag 'messages', class: 'flex-1 overflow-y-auto opacity-0rp-4 mb-4', data: { chatrooms_target: 'messages' }
       - @chatroom.messages.each do |message|
         = render partial: 'messages/message', locals: { message: message }
 
