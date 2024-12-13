@@ -118,7 +118,7 @@ RSpec.describe MessagesController, type: :request do
         it 'update the message' do
           params = { message: valid_attributes }
           put chatroom_message_path(chatroom, message, format: :turbo_stream), params: params
-          expect(message.reload.content.to_plain_text).to eq(valid_attributes[:content])
+          expect(message.reload.content).to eq(valid_attributes[:content])
         end
 
         it 'renders a turbo_stream with replace action' do

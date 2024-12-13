@@ -1,8 +1,9 @@
 h1.text-2xl.font-bold.mb-6.text-center Users
 
-.mx-auto
-  = simple_form_for :by_email, url: users_path, method: :get do |f|
-    = f.input :email, label: false, placeholder: 'Search by email', input_html: { name: :by_email }
+= turbo_frame_tag 'users'
+  .mx-auto
+    = simple_form_for :by_email, url: users_path, method: :get do |f|
+      = f.input :email, label: false, placeholder: 'Search by email', input_html: { name: :by_email }
 
 .flex.flex-col.gap-2
   - @users.each do |user|

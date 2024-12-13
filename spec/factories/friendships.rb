@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :pending_friendship, class: Friendship do
-    user { create(:user) }
-    friend { create(:user) }
+  factory :friendship do
+    association :user
+    association :friend, factory: :user
     status { :accepted }
   end
 
-  factory :accepted_friendship, class: Friendship do
-    user { create(:user) }
-    friend { create(:user) }
+  factory :accepted_friendship, parent: :friendship do
     status { :accepted }
+  end
 
-    after(:create) do |friendship|
-      reciprocal_friendship = Friendship.find_by(user: friendship.friend, friend: friendship.user)
-      reciprocal_friendship.update!(status: :accepted) if reciprocal_friendship.present?
-    end
+  factory :pending_friendship, parent: :friendship do
+    status { :accepted }
   end
 end

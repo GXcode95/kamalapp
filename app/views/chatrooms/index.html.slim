@@ -8,7 +8,8 @@
     - if @chatroom
       = render template: 'chatrooms/show', locals: { chatroom: @chatroom }
     - else
-      p.text-center.text-2xl.text-bold No chatroom selected
+      = turbo_frame_tag 'chatroom-chat', class: 'flex flex-col h-full overflow-hidden'
+        p.text-center.text-2xl.text-bold No chatroom selected
 
 css:
   .message-#{current_user&.id} {

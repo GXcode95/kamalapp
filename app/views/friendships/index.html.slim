@@ -1,11 +1,11 @@
 h1.text-2xl.font-bold.mb-6.text-center Friendships
 
-.flex.flex-col.gap-2
+#requests.flex.flex-col.gap-2
   h2.text-lg.font-bold.text-center Pending requests
   - @pending_friendships.each do |friendship|
     = turbo_frame_tag friendship
       = render partial: 'users/user', locals: { user: friendship.friend }
-.flex.flex-col.gap-2
+#friends.flex.flex-col.gap-2
   h2.text-lg.font-bold.text-center Friends
   - @accepted_friendships.each do |friendship|
     = turbo_frame_tag friendship

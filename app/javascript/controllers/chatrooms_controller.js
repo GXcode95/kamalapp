@@ -9,11 +9,7 @@ export default class extends Controller {
   ]
 
   connect() {
-    this.observer = new MutationObserver(() => {
-      this.scrollToBottom()
-    })
 
-    this.observer.observe(this.messagesTarget, { childList: true })
   }
 
   disconnect() {
@@ -21,10 +17,18 @@ export default class extends Controller {
   }
 
   listTargetConnected(){
+    if (!this.hasChatTarget) return
+
     this.updateReadStatus()
   }
   
   chatTargetConnected(){
+    this.observer = new MutationObserver(() => {
+      this.scrollToBottom()
+    })
+
+    this.observer.observe(this.messagesTarget, { childList: true })
+
     this.scrollToBottom()
     this.messagesTarget.classList.remove('opacity-0')
     this.updateReadStatus()
@@ -32,6 +36,7 @@ export default class extends Controller {
 
   updateReadStatus(){
     const chatroomId = this.chatTarget.dataset.chatroomId
+
     const chatroomListItemEl = this.listTarget.querySelector(`#chatroom_list_item_${chatroomId}`)
     if (!chatroomListItemEl) return
 

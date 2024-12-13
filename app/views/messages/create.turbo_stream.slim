@@ -1,2 +1,3 @@
+= turbo_stream.append 'messages', partial: 'message', collection: @chatroom.messages
 = turbo_stream.update 'new-message', partial: 'form', locals: { message: @chatroom.messages.new }
 = turbo_stream.replace('flashes',  partial: 'shared/flashes', locals: { flash: flash })
